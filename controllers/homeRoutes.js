@@ -4,17 +4,13 @@ const withAuth = require('../utils/auth');
 const { post } = require('./api');
 
 
-router.get('/', async (req, res) => {
-  try {
-    // Get all projects and JOIN with user data
-    const postData = await post.findAll({
-      include: [
-        {
-          model: Comments,    //fix this 
-          attributes: [User], //fix this 
-        },
-      ],
-    });
+router.get('/login', async (req, res) => {
+  if(req.session.login) {
+    res.redirect('/');
+    return;
+  }
+  res.render('login')
+});
 
     // Serialize data so the template can read it
     const post = postData.map((post) => post.get({ plain: true }));
